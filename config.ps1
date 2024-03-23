@@ -5,8 +5,12 @@ $searchName = "Default_search_name"
 $authenticationUsername="user@domain.com"
 
 # Set the start and end time for the audit log search
-$startTime = (get-date).AddDays(-2) 
-$endTime = (get-date)
+# Note that these are in UTC
+
+$startTime = (get-date).AddDays(-2) # Search back 2 days
+#$startTime = Get-Date -Date "22/03/2024 0:0:0" # Search from a specific time
+
+$endTime = (get-date) # Search until today
 
 $parameters = @{
     # Search constraints

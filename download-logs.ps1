@@ -1,5 +1,8 @@
 param( $configFileName)
 
+# Output informational messages
+$InformationPreference = "Continue"
+
 # Some constants
 $maxresultsize=3000
 
@@ -9,7 +12,7 @@ $defaultConfigFileName="config.ps1"
 function logMsg
 {
     param($message)
-    Write-Output $message
+    Write-Information $message
 }
 
 function doSearch
@@ -21,9 +24,13 @@ function doSearch
     $results = Search-UnifiedAuditLog @parameters
     
     # Check the results
-    if( !$results -or $results.Count -eq 0 )
+    if( !$results )
     {
 		# Error handling code goes here...
+	}
+    if( $results.Count -eq 0 )
+    {
+		logMsg("Retrieved 0 records - search has completed")
 	}
 	else
 	{
@@ -41,10 +48,10 @@ if( $configFileName -eq $null )
 	$configFileName = $defaultConfigFileName
 }
 
-logMsg("Loading config from $configFileName")
+logMsg("`nLoading config from $configFileName")
 . ./$configFileName
 $output = $parameters | out-string
-logMsg("`nParameters: $output")
+logMsg("`nSearch parameters: $output")
 
 # Connect to M365
 logMsg("Connecting as $authenticationUsername")

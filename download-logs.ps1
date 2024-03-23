@@ -66,3 +66,7 @@ while( $results -and $results[0].ResultCount -gt 0 )
     $results = doSearch($parameters)
     $combinedresults += $results
 }
+
+# Write the results to a CSV file
+$resultsFileName = "$searchName.results.csv"
+$combinedresults | export-csv -path $resultsFileName
